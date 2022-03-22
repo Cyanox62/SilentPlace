@@ -80,6 +80,7 @@ namespace SilentPlace
 			foreach (Player player in Player.List)
 			{
 				player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
+				player.ReferenceHub.characterClassManager.NetworkIntercomMuted = true;
 				string name = count.ToString();
 				player.DisplayNickname = name;
 				sb.Append($"> {count} - {player.Nickname} ({player.UserId})\n");
@@ -96,12 +97,14 @@ namespace SilentPlace
 			foreach (Player player in Player.List)
 			{
 				player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = false;
+				player.ReferenceHub.characterClassManager.NetworkIntercomMuted = false;
 			}
 		}
 
 		internal void OnPlayerJoin(VerifiedEventArgs ev)
 		{
 			ev.Player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
+			ev.Player.ReferenceHub.characterClassManager.NetworkIntercomMuted = true;
 		}
 
 		internal void OnNukeStart(StartingEventArgs ev)
