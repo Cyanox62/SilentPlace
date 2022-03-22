@@ -18,7 +18,6 @@ namespace SilentPlace
 
 			ev = new EventHandlers();
 			Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
-			Exiled.Events.Handlers.Server.RoundEnded += ev.OnRoundEnd;
 
 			Exiled.Events.Handlers.Player.Verified += ev.OnPlayerJoin;
 
@@ -32,7 +31,6 @@ namespace SilentPlace
 			base.OnDisabled();
 
 			Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
-			Exiled.Events.Handlers.Server.RoundEnded -= ev.OnRoundEnd;
 
 			Exiled.Events.Handlers.Player.Verified -= ev.OnPlayerJoin;
 

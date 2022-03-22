@@ -1,7 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -90,15 +89,6 @@ namespace SilentPlace
 			SendWebhook(sb.ToString());
 
 			SetRoomColors();
-		}
-
-		internal void OnRoundEnd(RoundEndedEventArgs ev)
-		{
-			foreach (Player player in Player.List)
-			{
-				player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = false;
-				player.ReferenceHub.characterClassManager.NetworkIntercomMuted = false;
-			}
 		}
 
 		internal void OnPlayerJoin(VerifiedEventArgs ev)
