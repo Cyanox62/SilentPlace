@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace SilentPlace
 		private Color hcz;
 		private Color entrance;
 		private Color surface;
+
+		private List<Player> nicknames = new List<Player>();
 
 		private void SendWebhook(string message)
 		{
@@ -66,6 +69,12 @@ namespace SilentPlace
 			return new Color32(r, g, b, a);
 		}
 
+		private void SetMuted(Player player, bool val)
+		{
+			player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = val;
+			player.ReferenceHub.characterClassManager.NetworkIntercomMuted = val;
+		}
+
 		internal void OnRoundStart()
 		{
 			lcz = hexToColor(Plugin.singleton.Config.LczColor);
@@ -76,12 +85,9 @@ namespace SilentPlace
 			StringBuilder sb = new StringBuilder();
 			sb.Append("**Username Translations:**\n");
 			int count = 1;
-			foreach (Player player in Player.List)
+			foreach (Player player in nicknames)
 			{
-				player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
-				player.ReferenceHub.characterClassManager.NetworkIntercomMuted = true;
-				string name = count.ToString();
-				player.DisplayNickname = name;
+				SetMuted(player, true);
 				sb.Append($"> {count} - {player.Nickname} ({player.UserId})\n");
 				count++;
 			}
@@ -91,10 +97,13 @@ namespace SilentPlace
 			SetRoomColors();
 		}
 
+		internal void OnWaitingForPlayers() => nicknames.Clear();
+
 		internal void OnPlayerJoin(VerifiedEventArgs ev)
 		{
-			ev.Player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
-			ev.Player.ReferenceHub.characterClassManager.NetworkIntercomMuted = true;
+			SetMuted(ev.Player, true);
+			nicknames.Add(ev.Player);
+			ev.Player.DisplayNickname = nicknames.Count.ToString();
 		}
 
 		internal void OnNukeStart(StartingEventArgs ev)
