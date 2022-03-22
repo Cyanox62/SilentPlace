@@ -40,5 +40,7 @@ namespace SilentPlace
 
 			ev = null;
 		}
+
+		public override string Author => "Cyanox";
 	}
 }
